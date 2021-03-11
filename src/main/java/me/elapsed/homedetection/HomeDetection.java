@@ -45,6 +45,17 @@ public class HomeDetection extends TimerTask {
 
     public void init() {
 
+        System.out.println(
+                "██╗  ██╗ ██████╗ ███╗   ███╗███████╗    ██████╗ ███████╗████████╗███████╗ ██████╗████████╗██╗ ██████╗ ███╗   ██╗\n" +
+                "██║  ██║██╔═══██╗████╗ ████║██╔════╝    ██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔════╝╚══██╔══╝██║██╔═══██╗████╗  ██║\n" +
+                "███████║██║   ██║██╔████╔██║█████╗      ██║  ██║█████╗     ██║   █████╗  ██║        ██║   ██║██║   ██║██╔██╗ ██║\n" +
+                "██╔══██║██║   ██║██║╚██╔╝██║██╔══╝      ██║  ██║██╔══╝     ██║   ██╔══╝  ██║        ██║   ██║██║   ██║██║╚██╗██║\n" +
+                "██║  ██║╚██████╔╝██║ ╚═╝ ██║███████╗    ██████╔╝███████╗   ██║   ███████╗╚██████╗   ██║   ██║╚██████╔╝██║ ╚████║\n" +
+                "╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝    ╚═════╝ ╚══════╝   ╚═╝   ╚══════╝ ╚═════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝\n"
+        );
+
+        System.out.println("──────────────────────────────────────────────────────");
+
         instance = this;
 
         status = true;
@@ -65,15 +76,20 @@ public class HomeDetection extends TimerTask {
         this.timerTask = new Timer();
 
         // Init the Scheduled Timer
-        this.timerTask.scheduleAtFixedRate(this, 1000 * 5, 1000 * 3);
+        this.timerTask.scheduleAtFixedRate(this, 1000 * 5, 1000 * 5);
 
+        System.out.println("Loading up house hold members...");
         this.houseHoldMembers.put("192.168.0.3", new HouseHoldMember("Elapsed"));
         this.houseHoldMembers.put("192.168.0.21", new HouseHoldMember("Mom"));
         this.houseHoldMembers.put("192.168.0.14", new HouseHoldMember("Dad"));
 
-        displayStartup();
+        System.out.println("");
+        System.out.println("We are looking after [" + this.houseHoldMembers.size() + "] house hold members!");
 
+        displayStartup();
         //scapeLocalNetwork();
+
+        System.out.println("──────────────────────────────────────────────────────");
     }
 
     public void scapeLocalNetwork() {
@@ -134,8 +150,14 @@ public class HomeDetection extends TimerTask {
 
                         // Lets reset the the disconnect count!
                         member.resetDisconnectCount();
+
                         // If it's already connected no need to notify again
-                        if (member.isConnected()) return;
+                        if (member.isConnected()) {
+//                            System.out.println("(" + LocalDate.now() + ") " + member.getName() + " Pinged....");
+//                            System.out.println("(" + LocalDate.now() + ") Status: ALIVE");
+                            return;
+                        }
+
                         // Setting that they are connected
                         member.setConnected(true);
                         // Notifying us that they are connected
@@ -164,12 +186,16 @@ public class HomeDetection extends TimerTask {
 
     public void displayStartup() {
 
+        System.out.println("");
+        System.out.println("Desktop Startup Display has been activated!");
+
         try {
             // Custom Message
             TrayIcon icon = new TrayIcon(getEnabledImage(), "House Hold Status");
             // Allowing windows to set the autosize
             icon.setImageAutoSize(true);
             // Adding a toggle button method
+
             icon.addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent event) {
